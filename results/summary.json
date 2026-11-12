@@ -1,0 +1,663 @@
+{
+  "command": "python run_analysis.py",
+  "scene": {
+    "file": "AP_27418_PLR_F0540_RT1.dem.tif",
+    "epsg": 32645,
+    "cell_m": 12.5,
+    "rows": 5729,
+    "columns": 3281,
+    "width_km": 41.0125,
+    "height_km": 71.6125,
+    "area_km2": 2921.02875,
+    "share_without_data": 0.0054405395287263625,
+    "west": 86.42998046028585,
+    "south": 27.06299954659938,
+    "east": 86.8468784640503,
+    "north": 27.710580022548502,
+    "lowest_m": 189.0,
+    "highest_m": 5806.0,
+    "median_m": 1746.0,
+    "whole_metres": true
+  },
+  "resampling": {
+    "cells": 17034849,
+    "from_cell_m": 25.0,
+    "to_cell_m": 12.5,
+    "mean_difference_between_neighbours_m": 4.414849447893398,
+    "methods": {
+      "nearest": {
+        "elevation_rmse_m": 3.977480067342528,
+        "slope_rmse_deg": 1.9993707030568462
+      },
+      "bilinear": {
+        "elevation_rmse_m": 1.0913243548596696,
+        "slope_rmse_deg": 1.5645382477728935
+      },
+      "cubic": {
+        "elevation_rmse_m": 0.5466549833518604,
+        "slope_rmse_deg": 0.916693601331092
+      }
+    }
+  },
+  "terrain": {
+    "cell_m": 25.0,
+    "cells": 4672013,
+    "area_km2": 2920.008125,
+    "slope_mean_deg": 27.756957931337528,
+    "slope_median_deg": 27.40952585354437,
+    "share_flatter_than_5_deg": 0.009736084616432756,
+    "share_steeper_than_30_deg": 0.3993502180133533,
+    "share_raised_more_than_1_m_by_filling": 0.008895523193107553,
+    "area_raised_more_than_1_m_km2": 25.975,
+    "depressions_deeper_than_1_m": 2848,
+    "largest_fill_depth_m": 232.75,
+    "largest_fill_at": {
+      "easting_km": 470.916625,
+      "northing_km": 3059.8395,
+      "longitude": 86.70511901610983,
+      "latitude": 27.662392315701847
+    },
+    "share_lowered_more_than_1_m_by_carving": 0.004385047729961368,
+    "outlets": 175,
+    "largest_outlets": [
+      {
+        "easting_km": 443.916625,
+        "northing_km": 3003.4145,
+        "longitude": 86.4339715351569,
+        "latitude": 27.152155763590912,
+        "area_km2": 1886.213125,
+        "elevation_m": 293.0
+      },
+      {
+        "easting_km": 471.566625,
+        "northing_km": 2993.5895,
+        "longitude": 86.71325454656534,
+        "latitude": 27.064300324070757,
+        "area_km2": 619.260625,
+        "elevation_m": 202.5
+      },
+      {
+        "easting_km": 443.916625,
+        "northing_km": 3053.6895,
+        "longitude": 86.43165691000266,
+        "latitude": 27.606021506307783,
+        "area_km2": 125.529375,
+        "elevation_m": 1668.25
+      },
+      {
+        "easting_km": 443.916625,
+        "northing_km": 3015.8145,
+        "longitude": 86.4334056847768,
+        "latitude": 27.264101538594414,
+        "area_km2": 64.418125,
+        "elevation_m": 512.75
+      },
+      {
+        "easting_km": 443.916625,
+        "northing_km": 3026.3395,
+        "longitude": 86.43292281698065,
+        "latitude": 27.359118615322433,
+        "area_km2": 63.251875,
+        "elevation_m": 879.25
+      }
+    ]
+  },
+  "rivers": [
+    {
+      "name": "Dudh Koshi",
+      "side": "north",
+      "enters": {
+        "easting_km": 471.516625,
+        "northing_km": 3065.0895,
+        "longitude": 86.71107773200339,
+        "latitude": 27.709799988783544
+      },
+      "enters_elevation_m": 2429.75,
+      "leaves": {
+        "easting_km": 443.916625,
+        "northing_km": 3003.4145,
+        "longitude": 86.4339715351569,
+        "latitude": 27.152155763590912
+      },
+      "leaves_elevation_m": 293.0,
+      "length_km": 99.63367055545818,
+      "mean_fall_m_per_km": 21.44606324435915,
+      "area_inside_scene_km2": 1886.213125,
+      "km_from_entry_until_area": {
+        "5 km²": 0.8389087296526015,
+        "25 km²": 3.7902543263816537,
+        "100 km²": 11.720027047856941
+      },
+      "level_minus_dem_m": {
+        "filled": {
+          "mean": 4.952231733414858,
+          "median": 2.25,
+          "percentile_5": 0.0,
+          "percentile_95": 17.625,
+          "rms": 11.058093484837837,
+          "largest": 184.75
+        },
+        "fitted": {
+          "mean": -0.008426880918795277,
+          "median": 0.0,
+          "percentile_5": -7.494565217391255,
+          "percentile_95": 7.0520134228187885,
+          "rms": 7.874287249075913,
+          "largest": 149.6363636363635
+        },
+        "carved": {
+          "mean": -14.349281565270559,
+          "median": -6.5,
+          "percentile_5": -46.25,
+          "percentile_95": 0.0,
+          "rms": 31.94890328756054,
+          "largest": -232.75
+        }
+      },
+      "filled_minus_carved_median_m": 10.5,
+      "largest_fill_m": 184.75,
+      "largest_fill_km_from_entry": 6.430508652763317
+    },
+    {
+      "name": "Sun Koshi",
+      "side": "west",
+      "enters": {
+        "easting_km": 443.916625,
+        "northing_km": 3001.1645,
+        "longitude": 86.43407385825788,
+        "latitude": 27.13184282938886
+      },
+      "enters_elevation_m": 275.25,
+      "leaves": {
+        "easting_km": 471.566625,
+        "northing_km": 2993.5895,
+        "longitude": 86.71325454656534,
+        "latitude": 27.064300324070757
+      },
+      "leaves_elevation_m": 202.5,
+      "length_km": 41.14627701597123,
+      "mean_fall_m_per_km": 1.768082200286591,
+      "area_inside_scene_km2": 619.260625,
+      "km_from_entry_until_area": {
+        "5 km²": 1.9452795795510758,
+        "25 km²": 7.112184335382282,
+        "100 km²": 11.85733764908628
+      },
+      "level_minus_dem_m": {
+        "filled": {
+          "mean": 3.2661604361370715,
+          "median": 2.5,
+          "percentile_5": 0.0,
+          "percentile_95": 9.5,
+          "rms": 4.592724377952372,
+          "largest": 23.0
+        },
+        "fitted": {
+          "mean": -0.025547270021820768,
+          "median": -0.21583850931676807,
+          "percentile_5": -3.8889920424403255,
+          "percentile_95": 4.4797297297297405,
+          "rms": 2.690947430689399,
+          "largest": 17.599337748344368
+        },
+        "carved": {
+          "mean": -15.21826323987539,
+          "median": -14.0,
+          "percentile_5": -27.75,
+          "percentile_95": -5.75,
+          "rms": 16.652981628476628,
+          "largest": -32.5
+        }
+      },
+      "filled_minus_carved_median_m": 16.25,
+      "largest_fill_m": 23.0,
+      "largest_fill_km_from_entry": 30.849168440096967
+    }
+  ],
+  "low_ground": {
+    "5 km²": {
+      "stream_length_km": 865.4891822874187,
+      "stream_cells_km2": 18.195,
+      "filled": {
+        "area_km2": {
+          "5 m": 56.533125,
+          "10 m": 75.42,
+          "20 m": 106.479375,
+          "50 m": 187.20375
+        },
+        "level_minus_dem_m": {
+          "mean": 2.0348653476229734,
+          "median": 0.0,
+          "percentile_5": 0.0,
+          "percentile_95": 9.25,
+          "rms": 8.289278732208691,
+          "largest": 216.5
+        }
+      },
+      "fitted": {
+        "area_km2": {
+          "5 m": 49.381875,
+          "10 m": 69.114375,
+          "20 m": 101.005,
+          "50 m": 182.25125
+        },
+        "level_minus_dem_m": {
+          "mean": -5.057174184167792e-16,
+          "median": 0.0,
+          "percentile_5": -3.1502980132450844,
+          "percentile_95": 3.099999999999909,
+          "rms": 5.0033412178468,
+          "largest": 130.10185185185196
+        }
+      },
+      "carved": {
+        "area_km2": {
+          "5 m": 32.960625,
+          "10 m": 52.222500000000004,
+          "20 m": 86.024375,
+          "50 m": 171.63625
+        },
+        "level_minus_dem_m": {
+          "mean": -4.349074264907942,
+          "median": 0.0,
+          "percentile_5": -21.5,
+          "percentile_95": 0.0,
+          "rms": 13.374788681033332,
+          "largest": -232.75
+        }
+      },
+      "share_reaching_no_stream": 0.021385214467511113
+    },
+    "25 km²": {
+      "stream_length_km": 407.6992745817479,
+      "stream_cells_km2": 8.45125,
+      "filled": {
+        "area_km2": {
+          "5 m": 38.36875,
+          "10 m": 48.6325,
+          "20 m": 64.87375,
+          "50 m": 105.814375
+        },
+        "level_minus_dem_m": {
+          "mean": 2.977351723117882,
+          "median": 0.75,
+          "percentile_5": 0.0,
+          "percentile_95": 12.25,
+          "rms": 7.385186178612381,
+          "largest": 184.75
+        }
+      },
+      "fitted": {
+        "area_km2": {
+          "5 m": 32.711875,
+          "10 m": 43.674375,
+          "20 m": 60.63375,
+          "50 m": 101.98375
+        },
+        "level_minus_dem_m": {
+          "mean": -9.101168601808117e-16,
+          "median": 0.0,
+          "percentile_5": -4.630937499999913,
+          "percentile_95": 4.549311594203058,
+          "rms": 4.710650721509847,
+          "largest": 149.6363636363635
+        }
+      },
+      "carved": {
+        "area_km2": {
+          "5 m": 17.524375,
+          "10 m": 28.02375,
+          "20 m": 46.719375,
+          "50 m": 92.18
+        },
+        "level_minus_dem_m": {
+          "mean": -7.880971749741162,
+          "median": -2.5,
+          "percentile_5": -29.25,
+          "percentile_95": 0.0,
+          "rms": 18.748248697978074,
+          "largest": -232.75
+        }
+      },
+      "share_reaching_no_stream": 0.05525155858941317
+    },
+    "100 km²": {
+      "stream_length_km": 229.92153480418298,
+      "stream_cells_km2": 4.68875,
+      "filled": {
+        "area_km2": {
+          "5 m": 28.65125,
+          "10 m": 35.2325,
+          "20 m": 45.505625,
+          "50 m": 70.274375
+        },
+        "level_minus_dem_m": {
+          "mean": 3.986103705678486,
+          "median": 1.75,
+          "percentile_5": 0.0,
+          "percentile_95": 15.0,
+          "rms": 9.235317033638324,
+          "largest": 184.75
+        }
+      },
+      "fitted": {
+        "area_km2": {
+          "5 m": 24.058125,
+          "10 m": 31.21875,
+          "20 m": 42.035625,
+          "50 m": 67.1625
+        },
+        "level_minus_dem_m": {
+          "mean": -1.9700465081058495e-15,
+          "median": 0.0,
+          "percentile_5": -5.73199404761908,
+          "percentile_95": 5.757485632183898,
+          "rms": 5.993437593768276,
+          "largest": 149.6363636363635
+        }
+      },
+      "carved": {
+        "area_km2": {
+          "5 m": 10.383125,
+          "10 m": 17.041875,
+          "20 m": 29.35,
+          "50 m": 58.22375
+        },
+        "level_minus_dem_m": {
+          "mean": -11.487603305785123,
+          "median": -5.75,
+          "percentile_5": -37.5,
+          "percentile_95": 0.0,
+          "rms": 24.069155161851413,
+          "largest": -232.75
+        }
+      },
+      "share_reaching_no_stream": 0.09897403966983825
+    }
+  },
+  "low_ground_by_river": {
+    "Dudh Koshi": {
+      "length_km": 99.63367055545818,
+      "area_km2": {
+        "5 m": 10.37375,
+        "10 m": 12.74125,
+        "20 m": 16.555625,
+        "50 m": 25.42875
+      },
+      "mean_width_m": {
+        "5 m": 104.11891825490615,
+        "10 m": 127.88096563107102,
+        "20 m": 166.1649611793113,
+        "50 m": 255.22245500175393
+      }
+    },
+    "Sun Koshi": {
+      "length_km": 41.14627701597123,
+      "area_km2": {
+        "5 m": 7.3775,
+        "10 m": 9.566875,
+        "20 m": 12.506875,
+        "50 m": 18.03625
+      },
+      "mean_width_m": {
+        "5 m": 179.29933240706976,
+        "10 m": 232.5088852215365,
+        "20 m": 303.961279294974,
+        "50 m": 438.3446403425296
+      }
+    },
+    "other streams": {
+      "length_km": 266.9193270103185,
+      "area_km2": {
+        "5 m": 14.960625,
+        "10 m": 21.36625,
+        "20 m": 31.57125,
+        "50 m": 58.518750000000004
+      },
+      "mean_width_m": {
+        "5 m": 56.04923842559237,
+        "10 m": 80.04759430243142,
+        "20 m": 118.28011989097936,
+        "50 m": 219.237590081807
+      }
+    }
+  },
+  "low_ground_by_cell_size": {
+    "12.5 m": {
+      "stream_length_km": 411.01594212450095,
+      "stream_cells_km2": 4.19375,
+      "filled": {
+        "5 m": 38.6765625,
+        "10 m": 48.7859375,
+        "20 m": 64.90046875,
+        "50 m": 105.7071875
+      },
+      "fitted": {
+        "5 m": 33.6578125,
+        "10 m": 44.4496875,
+        "20 m": 61.26140625,
+        "50 m": 102.4171875
+      },
+      "carved": {
+        "5 m": 15.26375,
+        "10 m": 26.01765625,
+        "20 m": 44.7384375,
+        "50 m": 90.935
+      }
+    },
+    "25 m": {
+      "stream_length_km": 407.6992745817479,
+      "stream_cells_km2": 8.45125,
+      "filled": {
+        "5 m": 38.36875,
+        "10 m": 48.6325,
+        "20 m": 64.87375,
+        "50 m": 105.814375
+      },
+      "fitted": {
+        "5 m": 32.711875,
+        "10 m": 43.674375,
+        "20 m": 60.63375,
+        "50 m": 101.98375
+      },
+      "carved": {
+        "5 m": 17.524375,
+        "10 m": 28.02375,
+        "20 m": 46.719375,
+        "50 m": 92.18
+      }
+    },
+    "50 m": {
+      "stream_length_km": 402.318787592779,
+      "stream_cells_km2": 16.91,
+      "filled": {
+        "5 m": 39.7525,
+        "10 m": 49.0625,
+        "20 m": 65.95,
+        "50 m": 107.6975
+      },
+      "fitted": {
+        "5 m": 34.0375,
+        "10 m": 43.8025,
+        "20 m": 61.385,
+        "50 m": 103.385
+      },
+      "carved": {
+        "5 m": 23.495,
+        "10 m": 32.675,
+        "20 m": 51.362500000000004,
+        "50 m": 96.015
+      }
+    }
+  },
+  "enlarged_map": {
+    "west_km": 443.904125,
+    "east_km": 455.904125,
+    "south_km": 2997.802,
+    "north_km": 3006.802,
+    "area_within_10_m_km2": 6.898125
+  },
+  "rainfall": {
+    "annual_total_mm": {
+      "Sankhuwasabha": 2480.0,
+      "Khotang": 2325.0,
+      "Okhaldhunga": 2170.0
+    },
+    "dry_months": [
+      1,
+      2,
+      12
+    ],
+    "monthly_multiples": {
+      "Sankhuwasabha": [
+        1.0,
+        2.0,
+        3.0,
+        4.001,
+        6.001,
+        8.001,
+        4.0,
+        2.0,
+        1.0
+      ],
+      "Khotang": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        6.0,
+        8.0,
+        4.0,
+        2.0,
+        1.0
+      ],
+      "Okhaldhunga": [
+        1.0,
+        2.0,
+        3.0,
+        4.001,
+        6.001,
+        8.001,
+        4.001,
+        2.0,
+        1.0
+      ]
+    },
+    "largest_departure_from_whole_multiples": 0.0012858979854275532,
+    "largest_difference_between_districts": 0.0014192313187608718,
+    "monsoon_rank_correlation_between_districts": [
+      -0.1602739411907958,
+      -0.0581235670304452
+    ],
+    "monsoon_days_wet_in_all_districts": 0.02459016393442623,
+    "monsoon_days_wet_in_all_districts_if_independent": 0.04833444208986655,
+    "days": 366,
+    "start": "2024-01-01",
+    "end": "2024-12-31",
+    "largest_daily_mm": {
+      "Sankhuwasabha": 183.26,
+      "Khotang": 150.76,
+      "Okhaldhunga": 145.19
+    }
+  },
+  "events": {
+    "events": 20,
+    "per_region": {
+      "Sankhuwasabha": 7,
+      "Khotang": 7,
+      "Okhaldhunga": 6
+    },
+    "per_severity": {
+      "Low": 6,
+      "Moderate": 7,
+      "High": 7
+    },
+    "stated_rainfall_above_series": {
+      "series_1d_mm": 20,
+      "series_3d_mm": 18,
+      "series_7d_mm": 16
+    },
+    "events_without_rain_in_series": {
+      "series_1d_mm": 15,
+      "series_3d_mm": 10,
+      "series_7d_mm": 3
+    },
+    "correlation_of_stated_rainfall_with_series": {
+      "series_1d_mm": 0.3748432866900271,
+      "series_3d_mm": 0.00028693718344492306,
+      "series_7d_mm": 0.27174807239007165
+    },
+    "severity_ranges": {
+      "Low": {
+        "area_km2": [
+          6.0,
+          19.0
+        ],
+        "rainfall_mm": [
+          63.0,
+          138.0
+        ]
+      },
+      "Moderate": {
+        "area_km2": [
+          20.0,
+          46.0
+        ],
+        "rainfall_mm": [
+          167.0,
+          249.0
+        ]
+      },
+      "High": {
+        "area_km2": [
+          50.0,
+          96.0
+        ],
+        "rainfall_mm": [
+          218.0,
+          319.0
+        ]
+      }
+    },
+    "neighbouring_classes_overlap": {
+      "area_km2": false,
+      "rainfall_mm": true
+    },
+    "area_against_rainfall": {
+      "events": 20,
+      "slope_km2_per_mm": 0.2809102093557122,
+      "intercept_km2": -13.478578154425605,
+      "rainfall_at_zero_area_mm": 47.981802389239235,
+      "r": 0.7692190441939318,
+      "r_low": 0.49529410274296326,
+      "r_high": 0.9040166912827424,
+      "p": 7.363611963070645e-05,
+      "spearman": 0.8227990970654625,
+      "rmse_fit_km2": 17.80167302359531,
+      "rmse_leave_one_out_km2": 19.560475395802726,
+      "rmse_leave_one_out_mean_only_km2": 29.32556767852227,
+      "leave_one_out_prediction_km2": [
+        71.50134116420682,
+        39.276840593446906,
+        26.524150035753756,
+        54.91324148608527,
+        49.19065202817799,
+        4.927384677751281,
+        14.418914870746619,
+        33.63434836541155,
+        51.365461373746456,
+        77.2264604683858,
+        37.33568212035692,
+        15.630400267077633,
+        46.3838673570603,
+        54.835645925091896,
+        7.575363035245598,
+        57.43846259872626,
+        59.30374004227258,
+        62.16056240503165,
+        37.95320012821882,
+        3.555631689826132
+      ]
+    }
+  }
+}
