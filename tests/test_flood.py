@@ -169,7 +169,6 @@ class Routing(unittest.TestCase):
     def test_ground_without_barriers_is_left_as_it_is(self):
         z = valley()
         routing = route_flow(z)
-        np.testing.assert_array_equal(routing.carved, z)
         stream = routing.cells >= z.shape[1]
         for level in ("filled", "fitted", "carved"):
             levels = stream_level(routing, stream, level)
@@ -205,37 +204,37 @@ class Routing(unittest.TestCase):
             np.testing.assert_allclose(level, best.x, atol=1e-4)
             self.assertLessEqual(np.sum((level - z) ** 2), best.fun + 1e-9)
 
-    def test_carving_cuts_a_barrier_where_filling_makes_a_lake(self):
+    def test_three_levels_of_a_stream_that_crosses_a_dam(self):
         rows, cols, centre = 30, 21, 10
         z = valley(rows, cols, centre)
         z[:2] += 10.0                                    # a head wall: the valley drains only past the dam
         z[15, centre - 2:centre + 3] += 5.0              # the dam; the lowest way round it is at 3.014
         routing = route_flow(z)
         np.testing.assert_allclose(routing.filled[2:15, centre - 2:centre + 3], 3.014)
-        self.assertTrue(np.all(routing.carved <= z))
-        self.assertGreaterEqual((z - routing.carved > 1.0).sum(), 1)
-        draining = np.flatnonzero(routing.receiver >= 0)
-        carved = routing.carved.ravel()
-        self.assertTrue(np.all(carved[routing.receiver[draining]] <= carved[draining]))
         stream = routing.cells >= 5 * cols
-        fitted = stream_level(routing, stream, "fitted").ravel()
-        on_stream = np.flatnonzero(stream.ravel() & (routing.receiver >= 0))
-        self.assertTrue(np.all(fitted[routing.receiver[on_stream]] <= fitted[on_stream] + 1e-12))
-        self.assertTrue(np.all(fitted[stream.ravel()] <= routing.filled[stream] + 1e-12))
-        self.assertTrue(np.all(fitted[stream.ravel()] >= routing.carved[stream] - 1e-12))
+        on = np.flatnonzero(stream.ravel())
+        filled, fitted, carved = (stream_level(routing, stream, level).ravel() for level in ("filled", "fitted", "carved"))
+        # by their definitions: the highest stream cell downstream and the lowest stream cell upstream
+        highest_downstream = np.array([z.ravel()[routing.flow_path(cell)].max() for cell in on])
+        lowest_upstream = np.full(z.size, np.inf)
+        for cell in on:
+            path = routing.flow_path(cell)
+            lowest_upstream[path] = np.minimum(lowest_upstream[path], z.ravel()[cell])
+        np.testing.assert_allclose(filled[on], highest_downstream)
+        np.testing.assert_allclose(carved[on], lowest_upstream[on])
+        self.assertGreater((filled[on] - carved[on]).max(), 0.9)       # the stream leaves the lake over its rim
+        self.assertTrue(np.all(carved[on] <= fitted[on] + 1e-12) and np.all(fitted[on] <= filled[on] + 1e-12))
+        draining = on[routing.receiver[on] >= 0]
+        for levels in (filled, fitted, carved):
+            self.assertTrue(np.all(levels[routing.receiver[draining]] <= levels[draining] + 1e-12))
         on_filled, on_fitted, on_carved = (height_above_drainage(routing, stream, level)
                                            for level in ("filled", "fitted", "carved"))
-        self.assertGreaterEqual(np.nanmin(on_carved), 0.0)
         self.assertLess(np.nanmin(on_filled), -2.9)      # the floor of the lake lies below the level of its outlet
         for height in (on_filled, on_fitted, on_carved):
             self.assertTrue(np.all(height[stream] == 0.0))
         reached = np.isfinite(on_fitted)
         self.assertTrue(np.all(on_filled[reached] <= on_fitted[reached] + 1e-12))
         self.assertTrue(np.all(on_fitted[reached] <= on_carved[reached] + 1e-12))
-        # the lake is low ground against the filled level; against the carved one only the valley floor is low
-        self.assertGreater((on_filled[2:15] <= 0.5).sum(), 2 * (on_carved[2:15] <= 0.5).sum())
-        np.testing.assert_allclose(on_carved[2:10, centre], 0.0, atol=0.02)
-        np.testing.assert_allclose(on_carved[2:10, centre + 2], 2.0, atol=0.02)
 
 
 class Tables(unittest.TestCase):

@@ -19,8 +19,9 @@ corrected for terrain (ASF DAAC, 2014). The metadata of the product say what the
 SRTM elevation model of 30 m resolution (SRTMGL1), "oversampled" to the 12.5 m cells of the
 radar product. It follows that:
 
-- the cells are 12.5 m but the detail is that of 30 m data, recorded by a radar in February 2000
-  and stored in whole metres;
+- the cells are 12.5 m but the detail is that of 30 m data, stored in whole metres. The data
+  were recorded by a radar in February 2000, and gaps in the radar data were filled from other
+  elevation models (NASA JPL, 2013);
 - the metadata do not state the vertical datum. The analysis uses only differences of height
   over short distances, which a shift of the datum does not change;
 - the grid has 3281 x 5729 cells in UTM zone 45N and 2,921 km² with data, from 86.43 to 86.85 °E
@@ -79,14 +80,15 @@ Both tables are therefore treated as practice data.
 4. **Streams.** A cell is a stream when at least 25 km² drain to it inside the scene; 5 and
    100 km² are computed as well. The courses of the two rivers are streams from the edge on.
 5. **Level of the streams.** A river only falls on its way down, but the elevations of the cells
-   along it go up and down. Three readings of the level are computed, each of which never rises
-   downstream:
-   - _filled_: low cells are raised; the lowest such level that is nowhere below the elevations;
-   - _carved_: high cells are lowered; the highest such level that is nowhere above the
-     elevations (Soille et al., 2003);
-   - _fitted_: the level closest to the elevations of the stream cells by least squares, found
-     by pooling neighbouring cells on the tree of the streams (Thompson, 1962). It lies between
-     the other two and is the one used for the maps.
+   along it go up and down. Three readings of the level are computed from the elevations of the
+   stream cells, each of which never rises downstream:
+   - _filled_: low cells are raised to the highest stream cell downstream of them; the lowest
+     such level that is nowhere below the elevations;
+   - _carved_: high cells are lowered to the lowest stream cell upstream of them; the highest
+     such level that is nowhere above the elevations (the idea of Soille et al., 2003);
+   - _fitted_: the level closest to the elevations by least squares, found by pooling
+     neighbouring cells on the tree of the streams (Thompson, 1962). It lies between the other
+     two and is the one used for the maps.
 
    Errors of an elevation model along valley floors are the subject of Schwanghart and Scherler
    (2017).
@@ -129,10 +131,10 @@ detail. Of the three methods nearest neighbour is the one to avoid.
   99.6 km, a mean fall of 21.4 m per km. The Sun Koshi enters at the west edge at 275 m and
   leaves at the south edge at 202 m after 41.1 km, 1.8 m per km.
 - Filling raises 0.89 % of the cells by more than 1 m, in 2,848 depressions. The deepest, 233 m,
-  lies on the Dudh Koshi 5 km south of the north edge. A river has no such pit; it is an error
-  of the elevation model.
+  lies in the valley of the Dudh Koshi 5 km south of the north edge. A river valley has no such
+  pit; it is an error of the elevation model.
 - Along the Sun Koshi the elevations differ from the fitted level by 2.7 m (RMS), along the Dudh
-  Koshi by 7.9 m. The filled level lies above the carved one by 16.2 m and 10.5 m (medians).
+  Koshi by 7.9 m. The filled level lies above the carved one by 10.5 m and 7.5 m (medians).
 
 ![Elevation along the two rivers and the three levels](figures/river_levels.png)
 
@@ -145,16 +147,20 @@ streams), on 25 m cells:
 | -------------------- | ---- | ---- | ---- | ----- |
 | filled               | 38.4 | 48.6 | 64.9 | 105.8 |
 | fitted               | 32.7 | 43.7 | 60.6 | 102.0 |
-| carved               | 17.5 | 28.0 | 46.7 | 92.2  |
+| carved               | 23.4 | 35.4 | 53.8 | 96.4  |
 
 - By the fitted level 43.7 km², 1.5 % of the scene, lie within 10 m of the streams, and
   102.0 km², 3.5 %, within 50 m.
 - At small heights the reading of the stream level decides the result. The area within 5 m is
-  17.5 km² by the carved level and 38.4 km² by the filled one, a factor of 2.2. Within 50 m the
-  two differ by 15 %.
+  23.4 km² by the carved level and 38.4 km² by the filled one, a factor of 1.6. Within 50 m the
+  two differ by 10 %.
 - The cell size matters little. With the fitted level the areas on 12.5, 25 and 50 m cells
   differ by 4 % at 5 m and by less than 2 % at the other heights. The carved level is the
-  exception: its area within 5 m goes from 15.3 to 23.5 km².
+  exception: its area within 5 m goes from 23.1 to 27.5 km².
+- Pits count as low ground. Where the elevation model has a pit on a stream, the fitted level
+  lies above the ground. 12.2 km² lie below the level of their stream, 3.3 km² by more than
+  10 m. The largest such patch, 1.0 km², is the 233 m pit; the map shows it as low ground near
+  the north edge, at easting 471 km and northing 3060 km.
 - With streams from 5 km² (865 km) the fitted level gives 69.1 km² within 10 m; with streams
   from 100 km² (230 km), 31.2 km².
 
@@ -196,7 +202,7 @@ python -m unittest discover -s tests
 
 ```
 flood/dem.py          reading the DEM, block means, resampling test, slope, raster output
-flood/hydro.py        depression filling, flow routing, carving, fitted stream level, height above the stream
+flood/hydro.py        depression filling, flow routing, the three stream levels, height above the stream
 flood/records.py      checks of the rainfall and flood-event tables
 run_analysis.py       the analysis; writes results/summary.json, results/summary.md and figures/
 tests/test_flood.py   25 tests on surfaces and tables with known answers
@@ -222,14 +228,16 @@ none. They are kept in `legacy/`.
   and no water level are computed, so it does not say how often water reaches a place.
 - Heights of 5 and 10 m are at the limit of the data: along the rivers the elevation model
   itself is off by several metres, and the three readings of the stream level differ by a
-  factor of 2.2 in the area within 5 m.
+  factor of 1.6 in the area within 5 m. All three are read from the cells of a stream line one
+  cell wide; cells beside that line can be lower.
 - Contributing areas count only the ground inside the scene. The Dudh Koshi drains 1,886 km²
   inside it and the Sun Koshi 619 km²; both bring water from far larger areas outside. Other
   valleys that enter at the edge are treated as if they started there.
 - A stream is one cell wide and each cell drains to one neighbour, so on a wide valley floor
   the position of the stream is uncertain.
-- The surface is that of February 2000 as a radar saw it, including vegetation and buildings.
-  River beds may have changed since.
+- The surface is that of February 2000 as a radar saw it, including vegetation and buildings,
+  and that of other elevation models where the radar data had gaps. River beds may have changed
+  since.
 - The entries of the two rivers and their names were set by hand from the elevation model.
 
 ## References
@@ -241,6 +249,9 @@ none. They are kept in `legacy/`.
   117-127. https://doi.org/10.1016/j.cageo.2013.04.024
 - Horn, B. K. P. (1981). Hill shading and the reflectance map. Proceedings of the IEEE 69,
   14-47. https://doi.org/10.1109/PROC.1981.11918
+- NASA JPL (2013). NASA Shuttle Radar Topography Mission Global 1 arc second, version 3. NASA
+  Land Processes Distributed Active Archive Center.
+  https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003
 - O'Callaghan, J. F. and Mark, D. M. (1984). The extraction of drainage networks from digital
   elevation data. Computer Vision, Graphics, and Image Processing 28, 323-344.
   https://doi.org/10.1016/S0734-189X(84)80011-0

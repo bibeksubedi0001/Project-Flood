@@ -1,4 +1,4 @@
-"""Depression filling, D8 flow routing, flow accumulation, carving and height above the drainage."""
+"""Depression filling, D8 flow routing, flow accumulation, stream levels and height above the drainage."""
 from __future__ import annotations
 
 import heapq
@@ -98,9 +98,9 @@ def _accumulate(order, receiver, weight):
 
 
 @njit(cache=True)
-def _carve(order, receiver, z):
-    """Lower every cell to the lowest elevation found upstream of it along the flow paths."""
-    carved = z.copy()
+def _carve(order, receiver, values):
+    """Lower every cell to the lowest value found upstream of it along the flow paths."""
+    carved = values.copy()
     for position in range(len(order) - 1, -1, -1):
         index = order[position]
         target = receiver[index]
@@ -190,7 +190,6 @@ def _value_downstream(order, receiver, value, stream):
 class FlowRouting:
     z: np.ndarray            # elevation as given, NaN outside the data
     filled: np.ndarray       # elevation with the depressions filled to their spill level
-    carved: np.ndarray       # elevation with a channel cut through every barrier on a flow path
     order: np.ndarray        # flat cell indices, every cell after the cell it drains to
     receiver: np.ndarray     # flat index of the downstream neighbour, -1 where flow leaves the data
     cells: np.ndarray        # number of cells draining through each cell, the cell itself included
@@ -219,9 +218,8 @@ class FlowRouting:
 def route_flow(z, closed=None):
     """Route the flow of an elevation grid (NaN outside the data) with D8 on its depression-filled surface.
 
-    The flow paths are those of the filled surface. The carved surface keeps the original elevations and
-    lowers the cells of a barrier along each path instead (carving; Soille et al., 2003). Flow leaves the
-    data at its edge, except through the cells marked in `closed`: mark the edge where a river enters.
+    Flow leaves the data at its edge, except through the cells marked in `closed`: mark the edge where
+    a river enters.
     """
     z = np.ascontiguousarray(z, dtype=np.float64)
     closed = np.zeros(z.shape, np.bool_) if closed is None else np.ascontiguousarray(closed, dtype=np.bool_)
@@ -232,24 +230,25 @@ def route_flow(z, closed=None):
     weight = np.isfinite(z).ravel().astype(np.float64)
     cells = _accumulate(order, receiver, weight).reshape(z.shape)
     cells[np.isnan(z)] = np.nan
-    carved = _carve(order, receiver, z.ravel()).reshape(z.shape)
-    return FlowRouting(z, filled, carved, order, receiver, cells)
+    return FlowRouting(z, filled, order, receiver, cells)
 
 
 def stream_level(routing, stream, level="fitted"):
-    """Level of every stream cell by one of three readings of the elevations, NaN elsewhere.
+    """Level of every stream cell by one of three readings of the elevations of the stream cells, NaN elsewhere.
 
     A stream must not rise downstream, and the elevations of its cells do. "filled" raises the low cells:
-    it is the lowest level that never rises downstream and is nowhere below the elevations. "carved"
-    lowers the high cells: it is the highest such level that is nowhere above them. "fitted" is the
-    level that never rises downstream and is closest to the elevations of the stream cells by least
-    squares; it lies between the other two.
+    it is the lowest level that never rises downstream and is nowhere below the elevations, the highest
+    stream cell downstream. "carved" lowers the high cells (the idea of Soille et al., 2003): it is the
+    highest such level that is nowhere above the elevations, the lowest stream cell upstream. "fitted"
+    is the level that never rises downstream and is closest to the elevations by least squares; it lies
+    between the other two. The streams are expected to continue to where the flow leaves the data.
     """
     stream = np.ascontiguousarray(stream, dtype=np.bool_) & np.isfinite(routing.z)
     if level == "filled":
         return np.where(stream, routing.filled, np.nan)
     if level == "carved":
-        return np.where(stream, routing.carved, np.nan)
+        on_stream = np.where(stream, routing.z, np.inf).ravel()
+        return np.where(stream, _carve(routing.order, routing.receiver, on_stream).reshape(stream.shape), np.nan)
     if level == "fitted":
         return _monotone_fit(routing.order, routing.receiver, routing.z.ravel(), stream.ravel()).reshape(stream.shape)
     raise ValueError("level must be 'filled', 'fitted' or 'carved'")

@@ -41,6 +41,7 @@ CELL_FACTORS = (1, 2, 4)                   # cell sizes, in cells of the file, o
 ENTRIES = {"Dudh Koshi": ("north", 470.5, 472.5), "Sun Koshi": ("west", 2999.8, 3001.9)}
 TOWNS = {"Okhaldhunga": (86.50, 27.32), "Diktel": (86.80, 27.21)}       # approximate, for orientation only
 WINDOW_KM = (12.0, 9.0)                    # width and height of the enlarged map
+PIT_DEPTH = 10                             # m below the level of its stream from which ground counts as lying in a pit
 RESAMPLING_MARGIN = 100                    # cells left out at the edge of the file, where data are missing
 
 HEIGHT_COLOURS = ("#08306b", "#2171b5", "#6baed6", "#c6dbef")
@@ -179,7 +180,6 @@ def analyse_terrain(dem, routing, area):
         "area_raised_more_than_1_m_km2": float((depth[valid] > 1.0).sum() * dem.cell_area_km2),
         "depressions_deeper_than_1_m": int(depressions),
         "largest_fill_depth_m": float(depth.ravel()[deepest]), "largest_fill_at": place(dem, deepest),
-        "share_lowered_more_than_1_m_by_carving": float(((dem.z - routing.carved)[valid] > 1.0).mean()),
         "outlets": int(len(outlets)),
         "largest_outlets": [dict(place(dem, index), area_km2=float(area.ravel()[index]),
                                  elevation_m=float(dem.z.ravel()[index])) for index in outlets[:5]],
@@ -233,6 +233,19 @@ def analyse_rivers(dem, routing, area, entry, kept):
             "largest_fill_m": float(difference["filled"][deepest]), "largest_fill_km_from_entry": float(distance[deepest]),
         }})
     return rivers
+
+
+def analyse_pits(dem, height):
+    """Ground far below the level of its stream: pits of the elevation model, which the map shows as low ground."""
+    below = np.nan_to_num(height, nan=0.0) < -PIT_DEPTH
+    labels, count = ndimage.label(below, structure=np.ones((3, 3)))
+    sizes = ndimage.sum(below, labels, np.arange(1, count + 1)) * dem.cell_area_km2
+    largest = int(np.argmax(sizes)) + 1
+    east, north = dem.position(*ndimage.center_of_mass(labels == largest))
+    return {"depth_m": PIT_DEPTH, "area_km2": float(below.sum() * dem.cell_area_km2), "patches": int(count),
+            "largest_patch_km2": float(sizes[largest - 1]), "largest_patch_easting_km": east / 1000,
+            "largest_patch_northing_km": north / 1000,
+            "area_below_the_stream_level_km2": float((height < 0).sum() * dem.cell_area_km2)}
 
 
 def analyse_by_river(dem, routing, area, river, rivers, height):
@@ -495,6 +508,7 @@ def plot_events(events, table, relation, regions):
 def report(summary, rain, table):
     scene, sampling, terrain, low = summary["scene"], summary["resampling"], summary["terrain"], summary["low_ground"]
     rainfall, events, window = summary["rainfall"], summary["events"], summary["enlarged_map"]
+    pits = summary["pits_under_the_fitted_level"]
     relation = events["area_against_rainfall"]
     lines = ["# Results", "", f"Command: `{summary['command']}`", "", "## The scene", "", "| | |", "|---|---|",
              f"| File | `{scene['file']}`, EPSG:{scene['epsg']} |",
@@ -520,8 +534,6 @@ def report(summary, rain, table):
               f"in {terrain['depressions_deeper_than_1_m']:,} depressions) |",
               f"| Largest fill depth | {terrain['largest_fill_depth_m']:.1f} m at easting {deepest['easting_km']:.2f} km, "
               f"northing {deepest['northing_km']:.2f} km |",
-              f"| Cells lowered by more than 1 m when the barriers are carved | "
-              f"{100 * terrain['share_lowered_more_than_1_m_by_carving']:.2f} % |",
               f"| Places where flow leaves the scene | {terrain['outlets']} |",
               "", "| Outlet | Area draining to it inside the scene (km²) | Easting (km) | Northing (km) | Longitude | Latitude | Elevation (m) |",
               "|---|---|---|---|---|---|---|"]
@@ -569,6 +581,10 @@ def report(summary, rain, table):
     lines += ["", f"The enlarged map covers easting {window['west_km']:.1f} to {window['east_km']:.1f} km and northing "
               f"{window['south_km']:.1f} to {window['north_km']:.1f} km: the block of {WINDOW_KM[0]:g} km by {WINDOW_KM[1]:g} km "
               f"with the most ground within 10 m of the streams ({window['area_within_10_m_km2']:.1f} km²).",
+              "", f"Ground below the fitted level of its stream: {pits['area_below_the_stream_level_km2']:.1f} km². More than "
+              f"{pits['depth_m']} m below it, in pits of the elevation model: {pits['area_km2']:.1f} km² in {pits['patches']} patches; "
+              f"the largest, {pits['largest_patch_km2']:.1f} km², lies around easting {pits['largest_patch_easting_km']:.0f} km, "
+              f"northing {pits['largest_patch_northing_km']:.0f} km. The maps show this ground in the lowest class.",
               "", f"### By river (fitted level, streams from {REFERENCE} km²)", "",
               "Area by the stream that the ground drains to, and that area divided by the length of the stream.", "",
               "| Stream | Length (km) | " + " | ".join(f"Area within {h} m (km²)" for h in HEIGHTS)
@@ -652,6 +668,7 @@ def main():
                "terrain": analyse_terrain(dem, routing, area), "rivers": [one["facts"] for one in rivers], "low_ground": low,
                "low_ground_by_river": analyse_by_river(dem, routing, area, river, rivers, height),
                "low_ground_by_cell_size": analyse_cell_size(native, {args.factor: low[f"{REFERENCE} km²"]}),
+               "pits_under_the_fitted_level": analyse_pits(dem, height),
                "enlarged_map": {"west_km": left, "east_km": right, "south_km": bottom, "north_km": top,
                                 "area_within_10_m_km2": float((block <= 10).sum() * dem.cell_area_km2)},
                **tables}

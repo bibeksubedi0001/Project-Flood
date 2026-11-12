@@ -30,7 +30,6 @@ Command: `python run_analysis.py`
 | Slope | mean 27.8°, median 27.4°; 0.97 % of the area is flatter than 5° and 40 % is steeper than 30° |
 | Cells raised by more than 1 m when the depressions are filled | 0.89 % (26.0 km² in 2,848 depressions) |
 | Largest fill depth | 232.8 m at easting 470.92 km, northing 3059.84 km |
-| Cells lowered by more than 1 m when the barriers are carved | 0.44 % |
 | Places where flow leaves the scene | 175 |
 
 | Outlet | Area draining to it inside the scene (km²) | Easting (km) | Northing (km) | Longitude | Latitude | Elevation (m) |
@@ -54,13 +53,13 @@ Level given to the cells of each river minus their elevation in the DEM, in m:
 |---|---|---|---|---|---|
 | Dudh Koshi | filled | 2.2 | 0.0 | 17.6 | 11.1 |
 | Dudh Koshi | fitted | 0.0 | -7.5 | 7.1 | 7.9 |
-| Dudh Koshi | carved | -6.5 | -46.2 | 0.0 | 31.9 |
+| Dudh Koshi | carved | -3.5 | -29.5 | 0.0 | 23.2 |
 | Sun Koshi | filled | 2.5 | 0.0 | 9.5 | 4.6 |
 | Sun Koshi | fitted | -0.2 | -3.9 | 4.5 | 2.7 |
-| Sun Koshi | carved | -14.0 | -27.8 | -5.8 | 16.7 |
+| Sun Koshi | carved | -7.8 | -20.0 | -0.8 | 10.0 |
 
-- Dudh Koshi: the filled level lies 10.5 m above the carved one (median); the largest fill along the river is 184.8 m, 6.4 km from the entry.
-- Sun Koshi: the filled level lies 16.2 m above the carved one (median); the largest fill along the river is 23.0 m, 30.8 km from the entry.
+- Dudh Koshi: the filled level lies 7.5 m above the carved one (median); the largest fill along the river is 184.8 m, 6.4 km from the entry.
+- Sun Koshi: the filled level lies 10.5 m above the carved one (median); the largest fill along the river is 23.0 m, 30.8 km from the entry.
 
 ## Level of the streams
 
@@ -70,13 +69,13 @@ Level of all stream cells minus their elevation in the DEM, in m:
 |---|---|---|---|---|---|---|---|
 | 5 km² | filled | 2.03 | 0.00 | 0.0 | 9.2 | 8.3 | 216.5 |
 | 5 km² | fitted | 0.00 | 0.00 | -3.2 | 3.1 | 5.0 | 130.1 |
-| 5 km² | carved | -4.35 | 0.00 | -21.5 | 0.0 | 13.4 | -232.8 |
+| 5 km² | carved | -2.70 | 0.00 | -12.8 | 0.0 | 10.3 | -216.5 |
 | 25 km² | filled | 2.98 | 0.75 | 0.0 | 12.2 | 7.4 | 184.8 |
 | 25 km² | fitted | 0.00 | 0.00 | -4.6 | 4.5 | 4.7 | 149.6 |
-| 25 km² | carved | -7.88 | -2.50 | -29.2 | 0.0 | 18.7 | -232.8 |
+| 25 km² | carved | -4.66 | -1.00 | -19.0 | 0.0 | 13.0 | -184.8 |
 | 100 km² | filled | 3.99 | 1.75 | 0.0 | 15.0 | 9.2 | 184.8 |
 | 100 km² | fitted | 0.00 | 0.00 | -5.7 | 5.8 | 6.0 | 149.6 |
-| 100 km² | carved | -11.49 | -5.75 | -37.5 | 0.0 | 24.1 | -232.8 |
+| 100 km² | carved | -6.88 | -2.75 | -23.8 | 0.0 | 16.9 | -184.8 |
 
 ## Ground near the streams
 
@@ -86,15 +85,17 @@ Area in km² at or below the given height above the level of the stream that the
 |---|---|---|---|---|---|---|---|---|
 | 5 km² | 865 | 18.2 | 2.1 % | filled | 56.5 | 75.4 | 106.5 | 187.2 |
 | 5 km² | 865 | 18.2 | 2.1 % | fitted | 49.4 | 69.1 | 101.0 | 182.3 |
-| 5 km² | 865 | 18.2 | 2.1 % | carved | 33.0 | 52.2 | 86.0 | 171.6 |
+| 5 km² | 865 | 18.2 | 2.1 % | carved | 39.2 | 59.9 | 93.4 | 176.1 |
 | 25 km² | 408 | 8.5 | 5.5 % | filled | 38.4 | 48.6 | 64.9 | 105.8 |
 | 25 km² | 408 | 8.5 | 5.5 % | fitted | 32.7 | 43.7 | 60.6 | 102.0 |
-| 25 km² | 408 | 8.5 | 5.5 % | carved | 17.5 | 28.0 | 46.7 | 92.2 |
+| 25 km² | 408 | 8.5 | 5.5 % | carved | 23.4 | 35.4 | 53.8 | 96.4 |
 | 100 km² | 230 | 4.7 | 9.9 % | filled | 28.7 | 35.2 | 45.5 | 70.3 |
 | 100 km² | 230 | 4.7 | 9.9 % | fitted | 24.1 | 31.2 | 42.0 | 67.2 |
-| 100 km² | 230 | 4.7 | 9.9 % | carved | 10.4 | 17.0 | 29.4 | 58.2 |
+| 100 km² | 230 | 4.7 | 9.9 % | carved | 15.6 | 23.8 | 35.9 | 62.0 |
 
 The enlarged map covers easting 443.9 to 455.9 km and northing 2997.8 to 3006.8 km: the block of 12 km by 9 km with the most ground within 10 m of the streams (6.9 km²).
+
+Ground below the fitted level of its stream: 12.2 km². More than 10 m below it, in pits of the elevation model: 3.3 km² in 235 patches; the largest, 1.0 km², lies around easting 471 km, northing 3060 km. The maps show this ground in the lowest class.
 
 ### By river (fitted level, streams from 25 km²)
 
@@ -112,13 +113,13 @@ Area by the stream that the ground drains to, and that area divided by the lengt
 |---|---|---|---|---|---|---|---|
 | 12.5 m | 411 | 4.2 | filled | 38.7 | 48.8 | 64.9 | 105.7 |
 | 12.5 m | 411 | 4.2 | fitted | 33.7 | 44.4 | 61.3 | 102.4 |
-| 12.5 m | 411 | 4.2 | carved | 15.3 | 26.0 | 44.7 | 90.9 |
+| 12.5 m | 411 | 4.2 | carved | 23.1 | 35.4 | 54.1 | 96.7 |
 | 25 m | 408 | 8.5 | filled | 38.4 | 48.6 | 64.9 | 105.8 |
 | 25 m | 408 | 8.5 | fitted | 32.7 | 43.7 | 60.6 | 102.0 |
-| 25 m | 408 | 8.5 | carved | 17.5 | 28.0 | 46.7 | 92.2 |
+| 25 m | 408 | 8.5 | carved | 23.4 | 35.4 | 53.8 | 96.4 |
 | 50 m | 402 | 16.9 | filled | 39.8 | 49.1 | 66.0 | 107.7 |
 | 50 m | 402 | 16.9 | fitted | 34.0 | 43.8 | 61.4 | 103.4 |
-| 50 m | 402 | 16.9 | carved | 23.5 | 32.7 | 51.4 | 96.0 |
+| 50 m | 402 | 16.9 | carved | 27.5 | 37.6 | 56.1 | 98.7 |
 
 ## Rainfall table
 
